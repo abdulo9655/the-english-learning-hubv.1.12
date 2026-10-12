@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080d24">
+<title>The English Learning Hub</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;overflow:hidden;
+  font-family:Arial,"Segoe UI",sans-serif;color:white;
+  background:#080d24;
+}
+#loader{
+  position:fixed;inset:0;display:grid;place-items:center;
+  padding:24px;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 15% 20%,#164eaa66,transparent 45%),
+    radial-gradient(ellipse at 85% 80%,#7029b766,transparent 42%),
+    linear-gradient(145deg,#070b1b,#101b3d 55%,#090d20);
+}
+.orb{
+  position:absolute;width:300px;height:300px;border-radius:50%;
+  background:linear-gradient(135deg,#38bdf855,#8b5cf655);
+  filter:blur(80px);
+  animation:float 5s infinite alternate;
+}
+.content{
+  position:relative;width:100%;max-width:560px;
+  text-align:center;animation:appear 1s ease both;
+}
+.logo{
+  width:82px;height:82px;margin:0 auto 25px;
+  border-radius:25px;display:grid;place-items:center;
+  font-size:42px;font-weight:900;
+  background:linear-gradient(135deg,#38bdf8,#6366f1,#a855f7);
+  box-shadow:0 0 60px #6366f166;
+  animation:pulse 2s infinite alternate;
+}
+.eyebrow{font-size:11px;letter-spacing:4px;color:#93c5fd}
+h1{font-size:clamp(27px,6vw,43px);line-height:1.2;margin:18px 0 12px}
+h1 span{
+  background:linear-gradient(90deg,#7dd3fc,#c4b5fd,#f0abfc);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.subtitle{color:#aebbd8;font-size:14px;line-height:1.9}
+.progress{
+  width:100%;max-width:340px;height:5px;
+  margin:32px auto 16px;background:#ffffff18;
+  border-radius:99px;overflow:hidden;
+}
+.bar{
+  width:0;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,#38bdf8,#818cf8,#e879f9);
+  box-shadow:0 0 18px #818cf8;
+  transition:width .15s linear;
+}
+.status{font-size:12px;color:#c4b5fd}
+.percent{font-size:11px;color:#7184ac;margin-top:8px}
+.enter{
+  margin-top:25px;padding:14px 25px;border-radius:13px;
+  border:1px solid #a5b4fc66;background:#ffffff0c;
+  color:white;font-size:14px;cursor:pointer;transition:.25s;
+}
+.enter:hover{background:#6366f144;transform:translateY(-2px)}
+.corner{
+  position:absolute;bottom:20px;left:22px;right:22px;
+  display:flex;justify-content:space-between;gap:12px;
+  font-size:9px;letter-spacing:1.5px;color:#60739e;
+}
+@keyframes float{to{transform:translate(35px,-30px) scale(1.15)}}
+@keyframes pulse{
+  to{box-shadow:0 0 85px #818cf866;transform:translateY(-4px)}
+}
+@keyframes appear{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+@media(max-width:400px){
+  .corner{font-size:8px;letter-spacing:1px}
+}
+</style>
+</head>
+
+<body>
+<div id="loader">
+  <div class="orb"></div>
+  <main class="content">
+    <div class="logo">E</div>
+    <div class="eyebrow">WELCOME TO YOUR FUTURE</div>
+    <h1>THE ENGLISH<br><span>LEARNING HUB</span></h1>
+
+    <div class="subtitle">
+      Small class. Big progress.<br>
+      กำลังเตรียมห้องเรียนของคุณ...
+    </div>
+
+    <div class="progress">
+      <div class="bar" id="bar"></div>
+    </div>
+
+    <div class="status" id="status">กำลังเริ่มต้นระบบ</div>
+    <div class="percent" id="percent">0%</div>
+
+    <button class="enter" id="enter">
+      เข้าสู่เว็บไซต์ทันที ↗
+    </button>
+  </main>
+
+  <div class="corner">
+    <span>ELH / 2026</span>
+    <span>LEARN · PRACTICE · GROW</span>
+  </div>
+</div>
+
+<script>
+const APP_URL =
+"https://script.google.com/macros/s/AKfycbwP4CNfwCcI0mWnRnyexUk3qhiEIQny9Zdpp0ajvIGPmirHx1UV0grzBWc9kiMJRZR2/exec";
+
+const messages = [
+  "กำลังเริ่มต้นระบบ",
+  "กำลังเตรียมห้องเรียน",
+  "กำลังจัดเตรียมประสบการณ์การเรียนรู้",
+  "กำลังเปิด The English Learning Hub",
+  "พร้อมเข้าสู่เว็บไซต์แล้ว"
+];
+
+let progress = 0;
+let finished = false;
+
+const bar = document.getElementById("bar");
+const percent = document.getElementById("percent");
+const status = document.getElementById("status");
+
+function enterWebsite(){
+  if(finished) return;
+  finished = true;
+  status.textContent = "กำลังเปิดเว็บไซต์หลัก...";
+  bar.style.width = "100%";
+  percent.textContent = "100%";
+  window.location.href = APP_URL;
+}
+
+document.getElementById("enter")
+  .addEventListener("click", enterWebsite);
+
+const timer = setInterval(() => {
+  if(finished){
+    clearInterval(timer);
+    return;
+  }
+
+  progress = Math.min(progress + Math.random()*3 + 1, 100);
+  bar.style.width = progress + "%";
+  percent.textContent = Math.floor(progress) + "%";
+
+  const index = Math.min(
+    Math.floor(progress / 25),
+    messages.length - 1
+  );
+
+  status.textContent = messages[index];
+
+  if(progress >= 100){
+    clearInterval(timer);
+    setTimeout(enterWebsite, 700);
+  }
+}, 150);
+</script>
+</body>
+</html>
